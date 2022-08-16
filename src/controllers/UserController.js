@@ -1,8 +1,10 @@
 const db = require("../config/sequelize");
 const User = require("../models/User");
 const Order = require("../models/Order");
+const Product = require("../models/Product");
 const { Op } = require("sequelize");
 const userController = {
+  // Busca os pedidos que um usuário possui e listar os produtos desses pedidos
   index: async (req, res) => {
     const { search } = req.query;
     try {
@@ -48,8 +50,17 @@ const userController = {
         },
         include: Order,
       });
+      // const order = await Order.findAll({
+      //   include: User,
+      // });
+      // console.log(order);
+
+      const order = await Order.findAll({
+        include: Product,
+      });
+      console.log(order);
       // const user = await User.findByPk(id);
-      console.log(user.Orders);
+      // console.log(user.Orders);
       if (!user) {
         throw Error("USER_NOT_FOUND");
       }
